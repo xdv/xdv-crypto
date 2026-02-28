@@ -1,0 +1,42 @@
+// File: crypto_bridge.ds - This file is part of XDV
+// Copyright (c) 2026 Dust LLC, and Contributors
+// Description:
+//   XDV Cryptographic Services Bridge
+//   Main entry point for xdv-crypto providing classical, post-quantum,
+//   and cross-domain cryptographic services per XDV-031 specification.
+
+module xdv_crypto;
+
+import xdv_lib;
+
+pub struct CryptoConfig {
+    deterministic_verification: bool,
+    postquantum_required: bool,
+    capability_token_signing: bool,
+    cross_domain_auth: bool,
+}
+
+pub struct CryptoProvider {
+    config: CryptoConfig,
+    classical: ClassicalCrypto,
+    postquantum: PostQuantumCrypto,
+    hybrid: HybridCrypto,
+}
+
+pub fn init(config: CryptoConfig) -> CryptoProvider {
+    CryptoProvider {
+        config: config,
+        classical: ClassicalCrypto::new(),
+        postquantum: PostQuantumCrypto::new(),
+        hybrid: HybridCrypto::new(),
+    }
+}
+
+pub fn crypto_bridge() -> CryptoProvider {
+    init(CryptoConfig {
+        deterministic_verification: true,
+        postquantum_required: true,
+        capability_token_signing: true,
+        cross_domain_auth: true,
+    })
+}

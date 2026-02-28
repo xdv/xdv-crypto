@@ -1,0 +1,41 @@
+# XDV Cryptographic Services Workspace Manifest
+# XDV-031 Cryptographic Architecture
+
+[workspace]
+name = "xdv_crypto"
+version = "0.1.0"
+description = "XDV Cryptographic Architecture - Classical, Post-Quantum, and Cross-Domain Cryptography"
+
+[workspace.sectors]
+xdv_lib = "../xdv-lib"
+dustlib = "../dustlib"
+dustlib_k = "../dustlib-k"
+
+[workspace.entrypoints]
+xdv_crypto = "src/crypto_bridge.ds"
+xdv_classical = "src/classical/crypto_classical.ds"
+xdv_postquantum = "src/postquantum/crypto_postquantum.ds"
+xdv_hybrid = "src/hybrid/crypto_hybrid.ds"
+xdv_capability = "src/capability/crypto_capability.ds"
+xdv_attestation = "src/attestation/hw_attestation.ds"
+
+[workspace.specs]
+XDV_031 = "../xdv-spec/XDV-031-Cryptographic-Architecture.md"
+
+[target.x64-pc-none]
+linker = "ld"
+linker_flags = ["-nostdlib", "-static"]
+
+[security]
+deterministic_verification = true
+postquantum_required = true
+capability_token_signing = true
+cross_domain_auth = true
+
+[crypto.primitives]
+classical_hashes = ["SHA256", "SHA384", "SHA512"]
+classical_signatures = ["ECDSA", "RSA"]
+classical_symmetric = ["AES-256-GCM"]
+classical_mac = ["HMAC-SHA256", "HMAC-SHA384"]
+postquantum_signatures = ["ML-DSA", "SLH-DSA"]
+postquantum_kem = ["ML-KEM", "Kyber"]
